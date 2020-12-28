@@ -40,7 +40,7 @@ You can use an sqlite database, just put `DB_CONNECTION=sqlite` in the `.env` fi
 
 # Usage
 
-Got to `https://webauthn.dzineer.com/webauthn/register` to register a new key.
+Go to `https://webauthn.dzineer.com/webauthn/register` to register a new key.
 
 
 # License
