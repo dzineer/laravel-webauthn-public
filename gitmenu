@@ -1,0 +1,256 @@
+#!/usr/bin/env bash
+
+# A menu driven shell script sample template
+## ----------------------------------
+# Step #1: Define variables
+# ----------------------------------
+EDITOR=vim
+PASSWD=/etc/passwd
+RED='\033[0;41;30m'
+STD='\033[0;0;39m'
+
+# docker exec -it laravel-app bash -c "sudo -u devuser /bin/bash"
+
+GIT='git --git-dir='$PWD'/.git'
+DOCKER='/usr/local/bin/docker';
+
+SSH_ERROR_LOG='ssh forge@144.202.9.5 -t -t tail -f dev.quotedirect.org/storage/logs/laravel.log'
+SSH_EVENT_LOG='ssh forge@144.202.9.5 -t -t tail -f dev.quotedirect.org/storage/logs/agentquote-events.log'
+
+
+# docker exec -it laravel-app bash -c "sudo -u devuser /usr/bin/tail -f storage/logs/laravel.log"
+
+DOCKER_ERROR_LOG="/usr/local/bin/docker exec -it laravel-app bash -c 'sudo -u devuser /usr/bin/tail -f storage/logs/laravel.log'"
+# $() <----- run when you use the variable as a command
+DOCKER_EVENT_LOG=$("/usr/local/bin/docker exec -it laravel-app bash -c 'sudo -u devuser /usr/bin/tail -f storage/logs/laravel.log'")
+
+branch=''
+branches=''
+log=''
+
+# ----------------------------------
+# Step #2: User defined function
+# ----------------------------------
+function pause(){
+  local fackEnterKey
+  read -r -p "Press [Enter] key to continue..." fackEnterKey
+}
+
+function gitAddAll(){
+	$GIT add -A
+        pause
+}
+
+# do something in two()
+function gitCommit(){
+    local comment
+	read -r -p "Comment: " comment
+	$GIT commit -m "$comment"
+        pause
+}
+
+# do something in two()
+function gitBranch(){
+	branch=$($GIT rev-parse --abbrev-ref HEAD)
+}
+
+
+# do something in two()
+function gitBranches(){
+	branches=$($GIT branch)
+}
+
+# do something in two()
+function gitSwitchBranch(){
+	read -r -p "New Branch: " branch
+	$GIT switch "$branch"
+        pause
+}
+
+# do something in two()
+function sshCommand(){
+	echo "ssh forge@144.202.9.5"
+	ssh forge@144.202.9.5 -t -t
+        pause
+}
+
+# do something in two()
+function gitLogs(){
+    local userChoice
+    while true
+    do
+        show_log_menus
+        read -r -p "Enter choice: " userChoice
+        case $userChoice in
+            0) showErrorLog ;;
+            1) showEventLog ;;
+            q) break ;;
+        esac
+    done
+}
+
+# do something in two()
+function dockerCommands(){
+    local userChoice
+    while true
+    do
+        show_docker_log_menus
+        read -r -p "Enter choice: " userChoice
+        case $userChoice in
+            0) showDockerErrorLog ;;
+            1) showDockerEventLog ;;
+            q) break ;;
+        esac
+    done
+}
+
+# do something in two()
+function updateGithub(){
+    local comment
+    $GIT add -A
+    read -r -p "Comment: " comment
+    $GIT commit -m "$comment"
+    $GIT push -u origin "$branch"
+    pause
+}
+
+# do something in two()
+function showErrorLog(){
+    $SSH_ERROR_LOG
+    pause
+}
+
+# do something in two()
+function showEventLog(){
+    $SSH_EVENT_LOG
+    pause
+}
+
+
+# do something in two()
+function showDockerErrorLog(){
+    #docker exec -it laravel-app bash -c "sudo -u devuser /usr/bin/tail -f storage/logs/laravel.log"
+    eval "$DOCKER_ERROR_LOG"
+    pause
+}
+
+# do something in two()
+function showDockerEventLog(){
+    $DOCKER_EVENT_LOG
+    pause
+}
+
+# do something in two()
+function gitPush(){
+	$GIT push -u origin "$branch"
+        pause
+}
+
+# do something in two()
+function gitStatus(){
+	$GIT status
+        pause
+}
+
+# function to display menus
+function show_docker_log_menus() {
+	clear
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo "        DOCKER - M E N U    "
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo "0. Errors"
+	echo "1. Events"
+	echo "q. Quit"
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+}
+
+# function to display menus
+function show_log_menus() {
+    gitBranch
+    gitBranches
+	clear
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo "        LOG - M E N U    "
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo "0. Errors"
+	echo "1. Events"
+	echo "q. Quit"
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+}
+
+# function to display menus
+function show_menus() {
+    gitBranch
+    gitBranches
+	clear
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo "Git Branches: "
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	printf "%s\n" "$branches"
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	echo "        DEV - M E N U    "
+	echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	printf "0. Change Branch"
+	printf "\n1. Git Add All"
+	printf "\n2. Git Commit"
+	printf "\n3. Git Push"
+	printf "\n4. Git Update Repo"
+	printf "\n5. Git Status"
+	printf "\n6. View Logs"
+	printf "\n7. Docker Menu"
+	printf "\n8. SSH"
+	printf "\nq. Quit"
+	printf "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
+}
+# read input from the keyboard and take a action
+# invoke the one() when the user select 1 from the menu option.
+# invoke the two() when the user select 2 from the menu option.
+# Exit when user the user select 3 form the menu option.
+function read_options(){
+	local choice
+	printf "\n"
+	read -r -p "Enter choice: " choice
+	case $choice in
+		0) gitSwitchBranch ;;
+		1) gitAddAll ;;
+		2) gitCommit ;;
+		3) gitPush ;;
+		4) updateGithub ;;
+		5) gitStatus ;;
+		6) gitLogs ;;
+		7) dockerCommands ;;
+		8) sshCommand ;;
+		q) exit 0;;
+	#	*) echo -e "${RED}Error...${STD}" && sleep 2
+	esac
+}
+
+function read_log_options(){
+	local choice
+	printf "\n"
+	read -r -p "Enter choice: " choice
+	return "$choice"
+}
+
+function read_docker_options(){
+	local choice
+	printf "\n"
+	read -r -p "Enter choice: " choice
+	return "$choice"
+}
+
+# ----------------------------------------------
+# Step #3: Trap CTRL+C, CTRL+Z and quit singles
+# ----------------------------------------------
+trap '' SIGINT SIGQUIT SIGTSTP
+
+# -----------------------------------
+# Step #4: Main logic - infinite loop
+# ------------------------------------
+while true
+do
+	show_menus
+	read_options
+done
+
