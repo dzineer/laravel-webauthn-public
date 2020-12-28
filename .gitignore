@@ -13,3 +13,6 @@ docker-compose.yml
 Dockerfile
 .docker
 gitmenu
+.dockerignore
+.idea
+.snyk
