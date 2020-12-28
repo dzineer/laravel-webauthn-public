@@ -1,11 +1,11 @@
-Laravel-WebAuthn Server Example
+Implementing A WebAuthn Server Example
 ====================================
 
-This is an example use of [asbiin/laravel-webauthn](https://github.com/dzineer/laravel-webauthn-public) package.
+This is an example using laravel-webauthn (package) [dzineer/laravel-webauthn-public](https://github.com/dzineer/laravel-webauthn-public) package.
 
 # Live Demo Example
 
-Try this application on [this live demo app](https://webauthn.dzineer.com/).
+Try this application on <a href="https://webauthn.dzineer.com/">this live demo app</a>.
 
 - Register, no email verification required.
 - Security Settings -> register key.
