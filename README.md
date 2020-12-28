@@ -1,17 +1,17 @@
-Laravel-WebAuthn example application
+Laravel-WebAuthn Server Example
 ====================================
 
-This is an example use of [asbiin/laravel-webauthn](https://github.com/asbiin/laravel-webauthn) package.
+This is an example use of [asbiin/laravel-webauthn](https://github.com/dzineer/laravel-webauthn-public) package.
 
-# Demo
+# Live Demo Example
 
-Try this application on [this live demo app](https://laravel-webauthn-example.herokuapp.com/).
+Try this application on [this live demo app](https://webauthn.dzineer.com/).
 
-- Just register with any email
-- Then add a WebAuthn key
-- Next login will ask to confirm the key
+- Register, no email verification required.
+- Security Settings -> register key.
+- Re-login and you will be required to use your Yubikey
 
-*Database is drop every day on this demo instance.*
+*Database may be erased at anytime.*
 
 
 # Installation
@@ -34,19 +34,19 @@ You can use an sqlite database, just put `DB_CONNECTION=sqlite` in the `.env` fi
     touch database/database.sqlite
     ```
 
-* Then run lyou need to point you webserver to the `public` directory. Follow instructions on the [Laravel documentation](https://laravel.com/docs/5.8/installation#configuration).
+* Point you webserver to the `public` directory. Follow instructions on the [Laravel documentation](https://laravel.com/docs/5.8/installation#configuration).
 * Be aware WebAuthn protocol only works on HTTPS mode, so you will need to set your webserver with https.
 
 
 # Usage
 
-Got to `https://localhost/webauthn/register` to register a new key.
+Got to `https://webauthn.dzineer.com/webauthn/register` to register a new key.
 
 
 # License
 
-Author: [Alexis Saettler](https://github.com/asbiin)
+Author: [Frank Decker](https://github.com/dzineer)
 
-Copyright © 2019-2020.
+Copyright © 2020.
 
 Licensed under the MIT License. [View license](/LICENSE).
